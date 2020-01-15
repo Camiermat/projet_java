@@ -6,11 +6,19 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>formulaire</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div>TODO write content</div>
+        <form method="post" action ="controleur">
+            <input type="hidden" name="todo" value="nouveauProduit"/>
+            Nom du produit : <input type="text" name="nom"/>
+            <br>
+            Quantité : <input type="number" name="quantite"/>
+            <br>
+            Suppression :<input type="checkbox" name="delete"/>
+            <input type="submit" value="OK"/>
+        </form>
     </body>
 </html>

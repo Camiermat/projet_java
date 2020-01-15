@@ -9,6 +9,6 @@ package business.logic;
  *
  * @author p1805797
  */
-public class ServicesGestion {
+public class ServicesGestionProduit {
     
 }

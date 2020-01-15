@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package business.model;
+package dao;
 
 import java.sql.Connection;
 import java.util.ArrayList;
-import static business.model.MariaDbDataSource.getMariaDbDataSource;
+import static dao.MariaDbDataSource.getMariaDbDataSource;
 
 /**
  *
@@ -17,4 +17,12 @@ public abstract interface DAO<T> {
     public Connection connect = getMariaDbDataSource();
     
     public abstract ArrayList<T> findAll();
+    
+    public abstract boolean find(String nom);
+    
+    public abstract boolean insert(T t);
+    
+    public abstract boolean update(T t);
+    
+    public abstract boolean delete(T t);
 }

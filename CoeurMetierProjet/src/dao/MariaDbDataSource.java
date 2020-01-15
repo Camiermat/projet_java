@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package business.model;
+package dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -24,7 +24,12 @@ public class MariaDbDataSource {
     public static Connection getMariaDbDataSource() {
         if (cnx==null){
             try {
-                cnx = DriverManager.getConnection("jdbc:mysql://iutdoua-web.univ-lyon1.fr:3306/p1805797","p1805797","368798");       
+                Class.forName("com.mysql.jdbc.Driver");
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(MariaDbDataSource.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                cnx = DriverManager.getConnection("jdbc:mysql://iutdoua-web.univ-lyon1.fr:3306/p1812104","p1812104","374922");       
             } catch (SQLException ex) {
                 Logger.getLogger(MariaDbDataSource.class.getName()).log(Level.SEVERE, 
                         null, ex);
