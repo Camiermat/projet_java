@@ -6,19 +6,23 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>formulaire</title>
+        <title>Liste de course</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <form method="post" action ="controleur">
-            <input type="hidden" name="todo" value="nouveauProduit"/>
-            Nom du produit : <input type="text" name="nom"/>
+        <h1>Bienvenue sur votre liste de course</h1>
+        <br>
+        <a href="ajout_produit.html">Ajout d'un produit</a>
+        <br>
+        <a href="/controleur">Consulter ma liste</a>
+        <form method="post" action="/controleur">
+            <input type="hidden" name="todo" value="choixPage"/>
+            Ajouter un produit<input type="checkbox" name="ajouterProduit"/>
             <br>
-            Quantité : <input type="number" name="quantite"/>
+            Consulter ma liste de course<input type="checkbox" name="consult"/>
             <br>
-            Suppression :<input type="checkbox" name="delete"/>
-            <input type="submit" value="OK"/>
+            <input type="submit" value="Poursuivre"/>
         </form>
     </body>
 </html>

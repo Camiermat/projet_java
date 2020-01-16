@@ -3,9 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package control;
+package Servlets.Ajout;
 
+import business.model.Produit;
+import dao.ProduitDAO;
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author p1805797
  */
-public class Controleur extends HttpServlet {
+public class AjoutProduit extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,46 +33,30 @@ public class Controleur extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String todo = request.getParameter("todo");
+        ProduitDAO dao = new ProduitDAO();
         RequestDispatcher rd;
-        switch(todo){
-            case "choixPage":
-                if(request.getParameter("ajouterProduit").equals("on")){
-                    rd = request.getRequestDispatcher("/controleur");
-                    request.setAttribute("todo", "nouveauProduit");
-                    rd.forward(request,response);
-                }
-                if(request.getParameter("consult").equals("on")){
-                    rd = request.getRequestDispatcher("/controleur");
-                    request.setAttribute("todo", "listeCourse");
-                    rd.forward(request,response);
-                }
-                break;
-            case "nouveauProduit":
-                rd = request.getRequestDispatcher("ajoutProduit");
-                rd.forward(request,response);
-                break;
-            case "listeCourse":
-                rd = request.getRequestDispatcher("listeProduit");
-                rd.forward(request,response);
-                break;
-            case "erreurPasQuantité":
-                break;
-            case "deleteProduit":
-                break;
-            case "problemeDeleteProduit":
-                break;
-            case "insertProduit":
-                break;
-            case "problemeInsertProduit":
-                break;
-            case "updateProduit":
-                break;
-            case "problemeUpdateProduit":
-                break;
-            default:
-                break;
+        String modif = "";
+        int quantite;
+        if (request.getParameter("quantite").equals("")){
+            rd = request.getRequestDispatcher("/controleur");
+            request.setAttribute("todo", "erreurPasQuantité");
+            rd.forward(request,response);
         }
+        quantite = Integer.parseInt(request.getParameter("quantite"));
+        Produit p = new Produit(request.getParameter("nom"),quantite);
+        boolean exist = dao.find(p.getNom());
+        if (request.getParameter("delete").equals("on")){
+            if(dao.delete(p))modif="deleteProduit";else modif="problemeDeleteProduit";            
+        } else {
+            if (!exist){
+                if(dao.insert(p))modif="insertProduit";else modif="problemeInsertProduit";
+            } else {
+                if(dao.update(p))modif="updateProduit";else modif="problemeUpdateProduit";
+            }
+        }
+        rd = request.getRequestDispatcher("/controleur");
+        request.setAttribute("todo", modif);
+        rd.forward(request,response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
