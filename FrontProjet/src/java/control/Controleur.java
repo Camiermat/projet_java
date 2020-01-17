@@ -46,7 +46,7 @@ public class Controleur extends HttpServlet {
             case "connect":
                 if(!(Objects.equals(request.getParameter("login"), "on")&&Objects.equals(request.getParameter("password"), "on"))){
                     User u = daoUser.findU(request.getParameter("login"));
-                    exist = u.equals(null);
+                    exist = u.getProprietaire()!=-1;
                     if(exist){
                         rd = request.getRequestDispatcher("accueil.jsp");
                         request.setAttribute("todo", "");
@@ -54,7 +54,7 @@ public class Controleur extends HttpServlet {
                         session.setAttribute("first","1");
                         rd.forward(request,response);
                     } else {
-                        rd = request.getRequestDispatcher("index.jsp");
+                        rd = request.getRequestDispatcher("connexion.jsp");
                         request.setAttribute("todo", "");
                         request.setAttribute("erreur", "erreurConnection");
                         rd.forward(request,response);
@@ -64,22 +64,19 @@ public class Controleur extends HttpServlet {
             case "inscription":
                 if(!(Objects.equals(request.getParameter("login"), "on")&&Objects.equals(request.getParameter("password"), "on"))){
                     User newUser = daoUser.findU(request.getParameter("login"),request.getParameter("password"));
-                    exist = newUser.equals(null);
+                    exist = newUser.getProprietaire()!=-1;
                     if(exist){
-                        rd = request.getRequestDispatcher("index.jsp");
+                        rd = request.getRequestDispatcher("connexion.jsp");
                         request.setAttribute("todo", "");
                         request.setAttribute("erreur", "erreurInscription");
                         rd.forward(request,response);
                     } else {
-                        daoUser.insert(newUser);
-                        System.out.println("1");
+                        daoUser.insert(new User(daoUser.count()+1,request.getParameter("login"),request.getParameter("password")));
                         rd = request.getRequestDispatcher("accueil.jsp");
                         session.setAttribute("name",request.getParameter("login"));
                         session.setAttribute("first","1");
                         request.setAttribute("todo", "");
-                        System.out.println("2");
                         rd.forward(request,response);
-                        System.out.println("3");
                     }
                 }
                 break;
@@ -122,7 +119,7 @@ public class Controleur extends HttpServlet {
                 rd.forward(request,response);
                 break;
             default:
-                rd = request.getRequestDispatcher("accueil.jsp");
+                rd = request.getRequestDispatcher("index.jsp");
                 rd.forward(request,response);
                 break;
         }

@@ -4,6 +4,7 @@
     Author     : p1805797
 --%>
 
+<%@page import="dao.UserDAO"%>
 <%@page import="dao.ProduitDAO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="business.model.Produit"%>
@@ -20,7 +21,8 @@
         <ul>
             <%
                 ProduitDAO dao = new ProduitDAO();
-                ArrayList<Produit> listProduit = dao.findAll();
+                UserDAO daoU = new UserDAO();
+                ArrayList<Produit> listProduit = dao.findAll((daoU.findU((String)request.getSession().getAttribute("name"))).getProprietaire());
                 for (Produit p : listProduit){
                     out.println("<li>"+p.getNom()+" : "+p.getQuantité()+"</li>");
                 }

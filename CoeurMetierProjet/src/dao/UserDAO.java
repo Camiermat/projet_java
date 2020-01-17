@@ -10,7 +10,7 @@ import static dao.DAO.connect;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.sql.Statement;
 
 /**
  *
@@ -39,7 +39,7 @@ public class UserDAO implements DAO{
         } catch (SQLException e){
             e.printStackTrace();
         }
-        return null;
+        return new User(-1,"","");
     }
     
     public User findU(String login, String password) {
@@ -52,7 +52,7 @@ public class UserDAO implements DAO{
         } catch (SQLException e){
             e.printStackTrace();
         }
-        return null;
+        return new User(-1,"","");
     }
 
     public boolean insert(User c) {
@@ -73,12 +73,22 @@ public class UserDAO implements DAO{
             PreparedStatement prepare = connect.prepareStatement("SELECT * FROM User WHERE login=? AND password=?");
             prepare.setString(1, u.getLogin());
             prepare.setString(2, u.getPassword());
-            System.out.println(u.getLogin()+u.getPassword());
             ResultSet result = prepare.executeQuery();
             if(result.next())return true;
         } catch (SQLException e){
             e.printStackTrace();
         }
         return false;
+    }
+    
+    public int count() {
+        try{
+            Statement stmt = connect.createStatement();
+            ResultSet result = stmt.executeQuery("SELECT count(*) FROM User");
+            if(result.next())return result.getInt(1);
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

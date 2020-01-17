@@ -12,12 +12,12 @@ package business.model;
 public class Produit {
     private int id;
     private String nom;
-    private int quantité;
+    private int quantite;
 
-    public Produit(int id, String nom, int quantité) {
+    public Produit(int id, String nom, int quantite) {
         this.id = id;
         this.nom = nom;
-        this.quantité = quantité;
+        this.quantite = quantite;
     }
 
     public String getNom() {
@@ -25,7 +25,7 @@ public class Produit {
     }
 
     public int getQuantité() {
-        return quantité;
+        return quantite;
     }
 
     public int getId() {
@@ -37,7 +37,7 @@ public class Produit {
     }
 
     public void setQuantité(int quantité) {
-        this.quantité = quantité;
+        this.quantite = quantité;
     }
 
     public void setId(int id) {
@@ -46,7 +46,7 @@ public class Produit {
 
     @Override
     public String toString() {
-        return "Produit{" + "id=" + id + ", nom=" + nom + ", quantit\u00e9=" + quantité + '}';
+        return "Produit{" + "id=" + id + ", nom=" + nom + ", quantit\u00e9=" + quantite + '}';
     }
 
 }

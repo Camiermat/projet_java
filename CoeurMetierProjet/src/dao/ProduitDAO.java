@@ -9,7 +9,6 @@ import business.model.Produit;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 /**
@@ -22,7 +21,7 @@ public class ProduitDAO implements DAO{
         try{
             PreparedStatement prepare = connect.prepareStatement("SELECT * FROM Produit WHERE Nom=? AND proprietaire=?");
             prepare.setString(1, nom);
-            prepare.setInt(1, id);
+            prepare.setInt(2, id);
             ResultSet result = prepare.executeQuery();
             if(result.next())return true;
         } catch (SQLException e){
