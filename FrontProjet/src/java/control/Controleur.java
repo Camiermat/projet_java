@@ -5,12 +5,18 @@
  */
 package control;
 
+import business.model.Produit;
+import business.model.User;
+import dao.ProduitDAO;
+import dao.UserDAO;
 import java.io.IOException;
+import java.util.Objects;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -32,42 +38,92 @@ public class Controleur extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String todo = request.getParameter("todo");
         RequestDispatcher rd;
+        ProduitDAO daoProduit = new ProduitDAO();
+        UserDAO daoUser = new UserDAO();
+        boolean exist;
+        HttpSession session = request.getSession();
         switch(todo){
+            case "connect":
+                if(!(Objects.equals(request.getParameter("login"), "on")&&Objects.equals(request.getParameter("password"), "on"))){
+                    User u = daoUser.findU(request.getParameter("login"));
+                    exist = u.equals(null);
+                    if(exist){
+                        rd = request.getRequestDispatcher("accueil.jsp");
+                        request.setAttribute("todo", "");
+                        session.setAttribute("name",request.getParameter("login"));
+                        session.setAttribute("first","1");
+                        rd.forward(request,response);
+                    } else {
+                        rd = request.getRequestDispatcher("index.jsp");
+                        request.setAttribute("todo", "");
+                        request.setAttribute("erreur", "erreurConnection");
+                        rd.forward(request,response);
+                    }
+                }
+                break;
+            case "inscription":
+                if(!(Objects.equals(request.getParameter("login"), "on")&&Objects.equals(request.getParameter("password"), "on"))){
+                    User newUser = daoUser.findU(request.getParameter("login"),request.getParameter("password"));
+                    exist = newUser.equals(null);
+                    if(exist){
+                        rd = request.getRequestDispatcher("index.jsp");
+                        request.setAttribute("todo", "");
+                        request.setAttribute("erreur", "erreurInscription");
+                        rd.forward(request,response);
+                    } else {
+                        daoUser.insert(newUser);
+                        System.out.println("1");
+                        rd = request.getRequestDispatcher("accueil.jsp");
+                        session.setAttribute("name",request.getParameter("login"));
+                        session.setAttribute("first","1");
+                        request.setAttribute("todo", "");
+                        System.out.println("2");
+                        rd.forward(request,response);
+                        System.out.println("3");
+                    }
+                }
+                break;
             case "choixPage":
-                if(request.getParameter("ajouterProduit").equals("on")){
-                    rd = request.getRequestDispatcher("/controleur");
-                    request.setAttribute("todo", "nouveauProduit");
+                if(Objects.equals(request.getParameter("ajouterProduit"), "on")){
+                    rd = request.getRequestDispatcher("ajout_produit.jsp");
+                    request.setAttribute("todo", "");
                     rd.forward(request,response);
                 }
-                if(request.getParameter("consult").equals("on")){
-                    rd = request.getRequestDispatcher("/controleur");
-                    request.setAttribute("todo", "listeCourse");
+                if(Objects.equals(request.getParameter("consult"), "on")){
+                    rd = request.getRequestDispatcher("liste_course.jsp");
+                    request.setAttribute("todo", "");
                     rd.forward(request,response);
                 }
-                break;
+                rd = request.getRequestDispatcher("accueil.jsp");
+                rd.forward(request,response);
             case "nouveauProduit":
-                rd = request.getRequestDispatcher("ajoutProduit");
+                String modif = "";
+                int quantite;
+                if (request.getParameter("quantite").equals("")){
+                    request.setAttribute("modif", "erreurPasQuantité");
+                } else {
+                    session.setAttribute("first", "2");
+                    quantite = Integer.parseInt(request.getParameter("quantite"));
+                    Produit p = new Produit(daoUser.findU((String)session.getAttribute("name")).getProprietaire(),request.getParameter("nom"),quantite);
+                    exist = daoProduit.find(p.getNom(),daoUser.findU((String)session.getAttribute("name")).getProprietaire());
+                    if (Objects.equals(request.getParameter("delete"), "on")){
+                        if(daoProduit.delete(p,daoUser.findU((String)session.getAttribute("name")).getProprietaire()))modif="Le produit "+request.getParameter("nom")+" a été supprimer.";            
+                    } else {
+                        if (!exist){
+                            if(daoProduit.insert(p,daoUser.findU((String)session.getAttribute("name")).getProprietaire()))modif="Le produit "+request.getParameter("nom")+" a été ajouter.";
+                        } else {
+                            if(daoProduit.update(p,daoUser.findU((String)session.getAttribute("name")).getProprietaire()))modif="Le produit "+request.getParameter("nom")+" a été modifier. Nouvelle quantité :"+quantite;
+                        }
+                    }
+                }
+                System.out.println(modif);
+                rd = request.getRequestDispatcher("accueil.jsp");
+                request.setAttribute("modif", modif);
                 rd.forward(request,response);
-                break;
-            case "listeCourse":
-                rd = request.getRequestDispatcher("listeProduit");
-                rd.forward(request,response);
-                break;
-            case "erreurPasQuantité":
-                break;
-            case "deleteProduit":
-                break;
-            case "problemeDeleteProduit":
-                break;
-            case "insertProduit":
-                break;
-            case "problemeInsertProduit":
-                break;
-            case "updateProduit":
-                break;
-            case "problemeUpdateProduit":
                 break;
             default:
+                rd = request.getRequestDispatcher("accueil.jsp");
+                rd.forward(request,response);
                 break;
         }
     }

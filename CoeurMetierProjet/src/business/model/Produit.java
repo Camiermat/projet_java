@@ -10,10 +10,12 @@ package business.model;
  * @author p1805797
  */
 public class Produit {
+    private int id;
     private String nom;
     private int quantité;
 
-    public Produit(String nom, int quantité) {
+    public Produit(int id, String nom, int quantité) {
+        this.id = id;
         this.nom = nom;
         this.quantité = quantité;
     }
@@ -26,6 +28,10 @@ public class Produit {
         return quantité;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public void setNom(String nom) {
         this.nom = nom;
     }
@@ -34,8 +40,13 @@ public class Produit {
         this.quantité = quantité;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
-        return "Produit{" + "nom=" + nom + ", quantit\u00e9=" + quantité + '}';
+        return "Produit{" + "id=" + id + ", nom=" + nom + ", quantit\u00e9=" + quantité + '}';
     }
+
 }

@@ -6,23 +6,12 @@
 package dao;
 
 import java.sql.Connection;
-import java.util.ArrayList;
 import static dao.MariaDbDataSource.getMariaDbDataSource;
 
 /**
  *
  * @author p1805797
  */
-public abstract interface DAO<T> {
+public abstract interface DAO {
     public Connection connect = getMariaDbDataSource();
-    
-    public abstract ArrayList<T> findAll();
-    
-    public abstract boolean find(String nom);
-    
-    public abstract boolean insert(T t);
-    
-    public abstract boolean update(T t);
-    
-    public abstract boolean delete(T t);
 }

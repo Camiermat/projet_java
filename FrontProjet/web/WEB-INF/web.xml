@@ -4,25 +4,9 @@
         <servlet-name>Controleur</servlet-name>
         <servlet-class>control.Controleur</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>AjoutProduit</servlet-name>
-        <servlet-class>Servlets.Ajout.AjoutProduit</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ListeProduit</servlet-name>
-        <servlet-class>Servlets.Liste.ListeProduit</servlet-class>
-    </servlet>
     <servlet-mapping>
         <servlet-name>Controleur</servlet-name>
         <url-pattern>/controleur</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>AjoutProduit</servlet-name>
-        <url-pattern>/ajoutProduit</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ListeProduit</servlet-name>
-        <url-pattern>/listeProduit</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

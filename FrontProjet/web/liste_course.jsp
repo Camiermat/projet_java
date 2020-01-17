@@ -4,6 +4,7 @@
     Author     : p1805797
 --%>
 
+<%@page import="dao.ProduitDAO"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="business.model.Produit"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -18,14 +19,16 @@
     <body>
         <ul>
             <%
-                ArrayList<Produit> listeProduit = (ArrayList<Produit>)request.getAttribute("listeProduit");
-                for (Produit p : listeProduit){
-            %><li>
-                <%=p.getNom()+" : "+p.getQuantité()%>
-              </li>
-            <%
+                ProduitDAO dao = new ProduitDAO();
+                ArrayList<Produit> listProduit = dao.findAll();
+                for (Produit p : listProduit){
+                    out.println("<li>"+p.getNom()+" : "+p.getQuantité()+"</li>");
                 }
             %>
         </ul>
+        <form method="post" action="controleur">
+            <input type="hidden" name="todo" value="retourAccueil"/>
+            <imput type="submit" value="retour accueil">
+        </form>
     </body>
 </html>

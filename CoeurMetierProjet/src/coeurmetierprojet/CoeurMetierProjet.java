@@ -5,9 +5,6 @@
  */
 package coeurmetierprojet;
 
-import business.model.Produit;
-import dao.ProduitDAO;
-import java.util.ArrayList;
 
 /**
  *
@@ -19,10 +16,6 @@ public class CoeurMetierProjet {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        ProduitDAO dao = new ProduitDAO();
-        ArrayList<Produit> listProduit = dao.findAll();
-        for(Produit p : listProduit){
-            System.out.println(p);
-        }
+        
     }
 }
