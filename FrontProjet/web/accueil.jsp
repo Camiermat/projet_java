@@ -13,10 +13,10 @@
         <title>Liste de course</title>
     </head>
     <body>
-        <h2>Bonjour <%=request.getSession().getAttribute("name")%></h2>
+        <h2>Bonjour <%=request.getSession().getAttribute("name")%></h2><!--Récupère le nom de l'utilisateur -->
         <br>
         <%
-            if(!(request.getSession().getAttribute("first").equals("1"))){
+            if(!(request.getSession().getAttribute("first").equals("1"))){//lorsque l'utilisateur à modifier un produit, on affiche le changement
                 if (!Objects.equals(request.getAttribute("modif"), null)){
                     out.println("<div>"+(String)request.getAttribute("modif")+"</div><br>");
                     request.setAttribute("modif","");
@@ -24,7 +24,7 @@
             }
         %>
         <h2>Quels actions souhaitez-vous réaliser ?</h2>
-        <form method="post" action="controleur">
+        <form method="post" action="controleur"><!--Formulaire pour savoir ce que l'utilisateur veut faire -->
             <input type="hidden" name="todo" value="choixPage"/>
             Ajouter un produit<input type="checkbox" name="ajouterProduit"/>
             <br>

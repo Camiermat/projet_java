@@ -18,7 +18,7 @@ import java.sql.Statement;
  */
 public class UserDAO implements DAO{
 
-    public boolean find(String login) {
+    public boolean find(String login) {//recherche d'un utilisateur avec son identifiant, retour un boolean
         try{
             PreparedStatement prepare = connect.prepareStatement("SELECT * FROM User WHERE login=?");
             prepare.setString(1, login);
@@ -30,7 +30,7 @@ public class UserDAO implements DAO{
         return false;
     }
     
-    public User findU(String login) {
+    public User findU(String login) {//recherche d'un utilisateur avec son identifiant, retour un User si trouver
         try{
             PreparedStatement prepare = connect.prepareStatement("SELECT * FROM User WHERE login=?");
             prepare.setString(1, login);
@@ -42,7 +42,7 @@ public class UserDAO implements DAO{
         return new User(-1,"","");
     }
     
-    public User findU(String login, String password) {
+    public User findU(String login, String password) {//recherche d'un utilisateur avec son identifiant et son mot de passe, retour un User si trouver
         try{
             PreparedStatement prepare = connect.prepareStatement("SELECT * FROM User WHERE login=? and password=?");
             prepare.setString(1, login);
@@ -55,7 +55,7 @@ public class UserDAO implements DAO{
         return new User(-1,"","");
     }
 
-    public boolean insert(User c) {
+    public boolean insert(User c) {//insertion d'un nouveau utilisateur 
         try{
             PreparedStatement prepare = connect.prepareStatement("INSERT INTO User (`login`, `password`) VALUES (?,?)");
             prepare.setString(1, c.getLogin());
@@ -68,7 +68,7 @@ public class UserDAO implements DAO{
         return false;
     }
     
-    public boolean find(User u) {
+    public boolean find(User u) {//recherche d'un utilisateur avec un utilisateur, retour un boolean
         try{
             PreparedStatement prepare = connect.prepareStatement("SELECT * FROM User WHERE login=? AND password=?");
             prepare.setString(1, u.getLogin());
@@ -81,7 +81,7 @@ public class UserDAO implements DAO{
         return false;
     }
     
-    public int count() {
+    public int count() {//retourne le nombre d'utlisateur
         try{
             Statement stmt = connect.createStatement();
             ResultSet result = stmt.executeQuery("SELECT count(*) FROM User");

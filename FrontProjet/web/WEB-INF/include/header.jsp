@@ -13,7 +13,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body>
-        <h1>Bienvenue sur le site de liste de course</h1>
+        <h1>Bienvenue sur le site de liste de course</h1><!-- header de toute les pages -->
         <br>
     </body>
 </html>

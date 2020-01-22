@@ -13,7 +13,7 @@
     </head>
     <body>
         Pour ajouter un nouveau produit, veuillez compléter le formulaire suivant :
-        <form method="post" action="controleur">
+        <form method="post" action="controleur"><!--Formulaire pour ajouter un produit -->
             <input type="hidden" name="todo" value="nouveauProduit"/>
             Nom du produit : <input type="text" name="nom"/>
             <br>

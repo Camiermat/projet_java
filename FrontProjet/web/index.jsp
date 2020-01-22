@@ -13,7 +13,7 @@
     </head>
     <body>
         <h2>Se connecter</h2>
-        <form method="post" action="controleur">
+        <form method="post" action="controleur"><!--Formulaire pour se connecter -->
             <input type="hidden" name="todo" value="connect">
             Login : <input type="text" name="login">
             Password : <input type="password" name="password">
@@ -21,7 +21,7 @@
         </form>
         <br>
         <h2>S'inscrire</h2>
-        <form method="post" action="controleur">
+        <form method="post" action="controleur"><!--Formulaire pour s'inscrire -->
             <input type="hidden" name="todo" value="inscription">
             Login : <input type="text" name="login">
             Password : <input type="password" name="password">

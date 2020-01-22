@@ -42,18 +42,18 @@ public class Controleur extends HttpServlet {
         UserDAO daoUser = new UserDAO();
         boolean exist;
         HttpSession session = request.getSession();
-        switch(todo){
-            case "connect":
+        switch(todo){ //switch pour faire les redirections
+            case "connect": //pour vérifier la connection sur le site
                 if(!(Objects.equals(request.getParameter("login"), "on")&&Objects.equals(request.getParameter("password"), "on"))){
                     User u = daoUser.findU(request.getParameter("login"), request.getParameter("password"));
                     exist = u.getProprietaire()!=-1;
-                    if(exist){
+                    if(exist){ //connection réussi, redirection vers accueil.jsp
                         rd = request.getRequestDispatcher("accueil.jsp");
                         request.setAttribute("todo", "");
-                        session.setAttribute("name",request.getParameter("login"));
+                        session.setAttribute("name",request.getParameter("login"));//définition des variables de session
                         session.setAttribute("first","1");
                         rd.forward(request,response);
-                    } else {
+                    } else {//erreur de connection, redirection vers connexion.jsp
                         rd = request.getRequestDispatcher("connexion.jsp");
                         request.setAttribute("todo", "");
                         request.setAttribute("erreur", "erreurConnection");
@@ -61,110 +61,110 @@ public class Controleur extends HttpServlet {
                     }
                 }
                 break;
-            case "inscription":
+            case "inscription":// pour vérifier l'inscription sur le site
                 if(!(Objects.equals(request.getParameter("login"), "on")&&Objects.equals(request.getParameter("password"), "on"))){
                     User newUser = daoUser.findU(request.getParameter("login"));
                     exist = newUser.getProprietaire()!=-1;
-                    if(exist){
+                    if(exist){//nom d'utilisateur déjà utiliser, redirection vers connexion.jsp
                         rd = request.getRequestDispatcher("connexion.jsp");
                         request.setAttribute("todo", "");
                         request.setAttribute("erreur", "erreurInscription");
                         rd.forward(request,response);
-                    } else {
+                    } else {//inscription réussi, redirection vers accueil
                         daoUser.insert(new User(daoUser.count()+1,request.getParameter("login"),request.getParameter("password")));
                         rd = request.getRequestDispatcher("accueil.jsp");
-                        session.setAttribute("name",request.getParameter("login"));
+                        session.setAttribute("name",request.getParameter("login"));//définition des variables de session
                         session.setAttribute("first","1");
                         request.setAttribute("todo", "");
                         rd.forward(request,response);
                     }
                 }
                 break;
-            case "choixPage":
-                if(Objects.equals(request.getParameter("deconnexion"), "on")){
+            case "choixPage"://sur la page d'accueil, pour savoir ce que l'utilisateur à choisit
+                if(Objects.equals(request.getParameter("deconnexion"), "on")){// si il choisit déconnection, on retourne vers la page d'accueil
                     rd = request.getRequestDispatcher("index.jsp");
-                    session.setAttribute("name","");
+                    session.setAttribute("name","");//suppression des variables de session
                     session.setAttribute("first","");
                     request.setAttribute("todo", "");
                     rd.forward(request,response);
                 } else {
-                    if((Objects.equals(request.getParameter("ajouterProduit"), "on")) && (Objects.equals(request.getParameter("consult"), "on"))){
+                    if((Objects.equals(request.getParameter("ajouterProduit"), "on")) && (Objects.equals(request.getParameter("consult"), "on"))){//si l'utilisateur choisit et l'ajout et la liste, o fait d'abord l'ajout, puis on affiche la liste
                         rd = request.getRequestDispatcher("ajout_produit.jsp");
                         request.setAttribute("todo", "");
-                        session.setAttribute("next","on");
+                        session.setAttribute("next","on");//pour dire que l'utilisateur veut consulter la liste
                         rd.forward(request,response);
                     } else {
-                        if(Objects.equals(request.getParameter("ajouterProduit"), "on")){
+                        if(Objects.equals(request.getParameter("ajouterProduit"), "on")){//si l'utilisateur veut ajouter un produit, redirection vers la page d'ajout
                             rd = request.getRequestDispatcher("ajout_produit.jsp");
                             request.setAttribute("todo", "");
                             session.setAttribute("next","off");
                             rd.forward(request,response);
                         } else {
-                            if(Objects.equals(request.getParameter("consult"), "on")){
+                            if(Objects.equals(request.getParameter("consult"), "on")){//si l'utilisateur veut consulter sa liste, redirection vers la liste
                                 rd = request.getRequestDispatcher("liste_course.jsp");
                                 request.setAttribute("todo", "");
                                 request.setAttribute("modif","");
                                 rd.forward(request,response);
-                            } else {
+                            } else {//si problème, redirection vers accueil
                                 rd = request.getRequestDispatcher("accueil.jsp");
                                 rd.forward(request,response);
                             }
                         }
                     }
                 }
-            case "nouveauProduit":
+            case "nouveauProduit"://lorsque l'utilisateur veut ajouter un produit
                 String modif = "";
                 String retourPage;
                 session.setAttribute("first", "2");
-                if ((Objects.equals(request.getParameter("quantite"), null))||(Objects.equals(request.getParameter("quantite"), ""))){
+                if ((Objects.equals(request.getParameter("quantite"), null))||(Objects.equals(request.getParameter("quantite"), ""))){//si il n'a pas entrer de quantité
                     exist = daoProduit.find(request.getParameter("nom"),daoUser.findU((String)session.getAttribute("name")).getProprietaire());
-                    if (exist){
-                        if (Objects.equals(request.getParameter("delete"), "on")){
+                    if (exist){//si le nom existe
+                        if (Objects.equals(request.getParameter("delete"), "on")){//si il veut supprimer, on supprime
                             daoProduit.delete(request.getParameter("nom"),daoUser.findU((String)session.getAttribute("name")).getProprietaire());
                             modif="Le produit "+request.getParameter("nom")+" a été supprimer.";
-                        } else {
+                        } else {//sinon problème car pas de quantité
                             modif = "La quantité n'a pas été saisie";
                         }
-                    } else {
+                    } else {//si le nom n'existe pas et que pas de quantité
                         modif = "Le produit n'existe pas et aucune quantité n'a été rentrée";
                     }
-                } else {
+                } else {//si il y a une quantité
                     int quantite = Integer.parseInt(request.getParameter("quantite"));
                     Produit p = new Produit(daoUser.findU((String)session.getAttribute("name")).getProprietaire(),request.getParameter("nom"),quantite);
                     exist = daoProduit.find(p.getNom(),daoUser.findU((String)session.getAttribute("name")).getProprietaire());
-                    if (!exist){
-                        if (Objects.equals(request.getParameter("delete"), "on")){
+                    if (!exist){//si le produit n'existe pas
+                        if (Objects.equals(request.getParameter("delete"), "on")){//si on veut supprimer, erreur
                             daoProduit.delete(p,daoUser.findU((String)session.getAttribute("name")).getProprietaire());
                             modif="Le produit "+request.getParameter("nom")+" n'existe pas.";            
-                        } else {
+                        } else {//sinon on insert
                             daoProduit.insert(p,daoUser.findU((String)session.getAttribute("name")).getProprietaire());
                             modif="Le produit "+request.getParameter("nom")+" a été ajouter.";
                         }
-                    } else {
-                        if (Objects.equals(request.getParameter("delete"), "on")){
+                    } else {//si le produit existe
+                        if (Objects.equals(request.getParameter("delete"), "on")){//si on veut le supprimer, on le supprime
                             daoProduit.delete(p,daoUser.findU((String)session.getAttribute("name")).getProprietaire());
                             modif="Le produit "+request.getParameter("nom")+" a été supprimer.";            
-                        } else {
+                        } else {//sinon on update
                             daoProduit.update(p,daoUser.findU((String)session.getAttribute("name")).getProprietaire());
                             modif="Le produit "+request.getParameter("nom")+" a été modifier. Nouvelle quantité :"+quantite;
                         }
                     }
                 }
-                if(Objects.equals(session.getAttribute("next"),"on")){
-                    retourPage = "liste_course.jsp";
+                if(Objects.equals(session.getAttribute("next"),"on")){//si l'utilisateur veut aller sur sa liste
+                    retourPage = "liste_course.jsp";//redirection vers la liste
                     request.setAttribute("todo", "");
-                } else {
-                    retourPage = "accueil.jsp";
+                } else {//sinon
+                    retourPage = "accueil.jsp";//redirection vers accueil
                 }
                 request.setAttribute("modif", modif);
                 rd = request.getRequestDispatcher(retourPage);
                 rd.forward(request,response);
                 break;
-            case "retourAccueil":
+            case "retourAccueil"://sur la liste, lorsque l'on a fini de la consulter, on retourne sur accueil
                 rd = request.getRequestDispatcher("accueil.jsp");
                 rd.forward(request,response);
                 break;
-            default:
+            default://en cas de problème, on sort du site
                 rd = request.getRequestDispatcher("index.jsp");
                 rd.forward(request,response);
                 break;

@@ -13,5 +13,5 @@ import static dao.MariaDbDataSource.getMariaDbDataSource;
  * @author p1805797
  */
 public abstract interface DAO {
-    public Connection connect = getMariaDbDataSource();
+    public Connection connect = getMariaDbDataSource();//attribut public qui stock la connection
 }

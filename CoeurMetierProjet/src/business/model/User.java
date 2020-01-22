@@ -9,7 +9,7 @@ package business.model;
  *
  * @author p1805797
  */
-public class User {
+public class User {//classe user, avec constructeur, getteur et toString()
     private int proprietaire;
     private String login;
     private String password;

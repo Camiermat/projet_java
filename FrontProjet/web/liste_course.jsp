@@ -17,7 +17,7 @@
     </head>
     <body>
         <%
-            String modif = (String)request.getAttribute("modif");
+            String modif = (String)request.getAttribute("modif");//si l'utilisateur à modifier un produit avant d'aller sur la liste, on affiche la modification
             if(!modif.equals("")){
                 request.setAttribute("modif","");
                 out.println("<div>"+modif+"</div><br>");
@@ -29,7 +29,7 @@
                 ProduitDAO dao = new ProduitDAO();
                 UserDAO daoU = new UserDAO();
                 ArrayList<Produit> listProduit = dao.findAll((daoU.findU((String)request.getSession().getAttribute("name"))).getProprietaire());
-                if (listProduit.size()==0){
+                if (listProduit.size()==0){//on affiche la liste des produits, et si il n'y en a pas, on affiche un message
                     out.println("Vous n'avez encore aucun produit dans votre liste");
                 } else {
                     for (Produit p : listProduit){
@@ -38,7 +38,7 @@
                 }
             %>
         </ul>
-        <form method="post" action="controleur">
+        <form method="post" action="controleur"><!--Formulaire pour revenir sur l'accueil -->
             <input type="hidden" name="todo" value="retourAccueil"/>
             Pour revenir sur la page d'accueil : <input type="submit" value="retour accueil"/>
         </form>

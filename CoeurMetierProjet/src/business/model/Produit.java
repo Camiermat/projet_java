@@ -9,7 +9,7 @@ package business.model;
  *
  * @author p1805797
  */
-public class Produit {
+public class Produit {//classe produit, avec constructeur, getteur, setteur et toString()
     private int id;
     private String nom;
     private int quantite;

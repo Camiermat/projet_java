@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public class ProduitDAO implements DAO{
 
-    public boolean find(String nom, int id) {
+    public boolean find(String nom, int id) {//recherche d'un produit pas son nom et l'identifiant du propriétaire
         try{
             PreparedStatement prepare = connect.prepareStatement("SELECT * FROM Produit WHERE Nom=? AND proprietaire=?");
             prepare.setString(1, nom);
@@ -30,7 +30,7 @@ public class ProduitDAO implements DAO{
         return false;
     }
 
-    public boolean insert(Produit p, int id) {
+    public boolean insert(Produit p, int id) {//insertion d'un nouveau produit 
         try{
             PreparedStatement prepare = connect.prepareStatement("INSERT INTO Produit VALUES (?,?,?)");
             prepare.setInt(1,id);
@@ -44,7 +44,7 @@ public class ProduitDAO implements DAO{
         return false;
     }
 
-    public boolean update(Produit p, int id) {
+    public boolean update(Produit p, int id) {//modifiaction d'un produit
         try{
             PreparedStatement prepare = connect.prepareStatement("UPDATE Produit SET Quantité=? where Nom=? and proprietaire=?");
             prepare.setInt(1,p.getQuantite());
@@ -58,7 +58,7 @@ public class ProduitDAO implements DAO{
         return false;
     }
 
-    public boolean delete(Produit p, int id) {
+    public boolean delete(Produit p, int id) {//suppression d'un produit avec le produit
         try{
             PreparedStatement prepare = connect.prepareStatement("DELETE FROM Produit where Nom=? and proprietaire=?");
             prepare.setString(1, p.getNom());
@@ -71,7 +71,7 @@ public class ProduitDAO implements DAO{
         return false;
     }
     
-    public boolean delete(String nom, int id) {
+    public boolean delete(String nom, int id) {//suppression d'un produit avec son nom
         try{
             PreparedStatement prepare = connect.prepareStatement("DELETE FROM Produit where Nom=? and proprietaire=?");
             prepare.setString(1, nom);
@@ -84,7 +84,7 @@ public class ProduitDAO implements DAO{
         return false;
     }
     
-    public ArrayList<Produit> findAll(int id) {
+    public ArrayList<Produit> findAll(int id) {//retourne la liste de tous les p^roduit pour un utilisateur
         ArrayList<Produit> list = new ArrayList();
         try {
             PreparedStatement prepare = connect.prepareStatement("SELECT * FROM Produit WHERE proprietaire=?");

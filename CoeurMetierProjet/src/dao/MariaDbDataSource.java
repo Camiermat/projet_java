@@ -21,7 +21,7 @@ public class MariaDbDataSource {
     private MariaDbDataSource() throws SQLException {
    }
    
-    public static Connection getMariaDbDataSource() {
+    public static Connection getMariaDbDataSource() {//pour obtenir une connection à la base de donnée
         if (cnx==null){
             try {
                 Class.forName("com.mysql.jdbc.Driver");
