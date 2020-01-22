@@ -4,6 +4,7 @@
     Author     : p1805797
 --%>
 
+<%@page import="java.util.Objects"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -18,10 +19,9 @@
         <br>
         <%
             if(!(request.getSession().getAttribute("first").equals("1"))){
-                String modif = (String)request.getAttribute("modif");
-                if (!modif.equals("")){
+                if (!Objects.equals(request.getAttribute("modif"), null)){
+                    out.println("<div>"+(String)request.getAttribute("modif")+"</div><br>");
                     request.setAttribute("modif","");
-                    out.println("<div>"+modif+"</div><br>");
                 }
             }
         %> 
@@ -31,9 +31,8 @@
             <br>
             Consulter ma liste de course<input type="checkbox" name="consult"/>
             <br>
+            Deconnexion<input type="checkbox" name="deconnexion"/>
             <input type="submit" value="Poursuivre"/>
-            <br>
-            <input type="submit" value="deconnexion">
         </form>
     </body>
 </html>

@@ -51,7 +51,7 @@ public class ProduitDAO implements DAO{
             prepare.setString(2, p.getNom());
             prepare.setInt(3, id);
             int result = prepare.executeUpdate();
-            if(result==1)return true;
+            if(result>=1)return true;
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -62,6 +62,19 @@ public class ProduitDAO implements DAO{
         try{
             PreparedStatement prepare = connect.prepareStatement("DELETE FROM Produit where Nom=? and proprietaire=?");
             prepare.setString(1, p.getNom());
+            prepare.setInt(2,id);
+            int result = prepare.executeUpdate();
+            if(result==1)return true;
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public boolean delete(String nom, int id) {
+        try{
+            PreparedStatement prepare = connect.prepareStatement("DELETE FROM Produit where Nom=? and proprietaire=?");
+            prepare.setString(1, nom);
             prepare.setInt(2,id);
             int result = prepare.executeUpdate();
             if(result==1)return true;

@@ -45,7 +45,7 @@ public class Controleur extends HttpServlet {
         switch(todo){
             case "connect":
                 if(!(Objects.equals(request.getParameter("login"), "on")&&Objects.equals(request.getParameter("password"), "on"))){
-                    User u = daoUser.findU(request.getParameter("login"));
+                    User u = daoUser.findU(request.getParameter("login"), request.getParameter("password"));
                     exist = u.getProprietaire()!=-1;
                     if(exist){
                         rd = request.getRequestDispatcher("accueil.jsp");
@@ -63,7 +63,7 @@ public class Controleur extends HttpServlet {
                 break;
             case "inscription":
                 if(!(Objects.equals(request.getParameter("login"), "on")&&Objects.equals(request.getParameter("password"), "on"))){
-                    User newUser = daoUser.findU(request.getParameter("login"),request.getParameter("password"));
+                    User newUser = daoUser.findU(request.getParameter("login"));
                     exist = newUser.getProprietaire()!=-1;
                     if(exist){
                         rd = request.getRequestDispatcher("connexion.jsp");
@@ -81,41 +81,81 @@ public class Controleur extends HttpServlet {
                 }
                 break;
             case "choixPage":
-                if(Objects.equals(request.getParameter("ajouterProduit"), "on")){
-                    rd = request.getRequestDispatcher("ajout_produit.jsp");
+                if(Objects.equals(request.getParameter("deconnexion"), "on")){
+                    rd = request.getRequestDispatcher("index.jsp");
+                    session.setAttribute("name","");
+                    session.setAttribute("first","");
                     request.setAttribute("todo", "");
                     rd.forward(request,response);
+                } else {
+                    if((Objects.equals(request.getParameter("ajouterProduit"), "on")) && (Objects.equals(request.getParameter("consult"), "on"))){
+                        rd = request.getRequestDispatcher("ajout_produit.jsp");
+                        request.setAttribute("todo", "");
+                        session.setAttribute("next","on");
+                        rd.forward(request,response);
+                    } else {
+                        if(Objects.equals(request.getParameter("ajouterProduit"), "on")){
+                            rd = request.getRequestDispatcher("ajout_produit.jsp");
+                            request.setAttribute("todo", "");
+                            session.setAttribute("next","off");
+                            rd.forward(request,response);
+                        } else {
+                            if(Objects.equals(request.getParameter("consult"), "on")){
+                                rd = request.getRequestDispatcher("liste_course.jsp");
+                                request.setAttribute("todo", "");
+                                request.setAttribute("modif","");
+                                rd.forward(request,response);
+                            } else {
+                                rd = request.getRequestDispatcher("accueil.jsp");
+                                rd.forward(request,response);
+                            }
+                        }
+                    }
                 }
-                if(Objects.equals(request.getParameter("consult"), "on")){
-                    rd = request.getRequestDispatcher("liste_course.jsp");
-                    request.setAttribute("todo", "");
-                    rd.forward(request,response);
-                }
-                rd = request.getRequestDispatcher("accueil.jsp");
-                rd.forward(request,response);
             case "nouveauProduit":
                 String modif = "";
-                int quantite;
-                if (request.getParameter("quantite").equals("")){
-                    request.setAttribute("modif", "erreurPasQuantité");
+                String retourPage;
+                session.setAttribute("first", "2");
+                if ((Objects.equals(request.getParameter("quantite"), null))||(Objects.equals(request.getParameter("quantite"), ""))){
+                    exist = daoProduit.find(request.getParameter("nom"),daoUser.findU((String)session.getAttribute("name")).getProprietaire());
+                    if (exist){
+                        if (Objects.equals(request.getParameter("delete"), "on")){
+                            if(daoProduit.delete(request.getParameter("nom"),daoUser.findU((String)session.getAttribute("name")).getProprietaire()))modif="Le produit "+request.getParameter("nom")+" a été supprimer.";
+                        }
+                    } else {
+                        modif = "Le produit n'existe pas et aucune quantité n'a été rentrée";
+                    }
                 } else {
-                    session.setAttribute("first", "2");
-                    quantite = Integer.parseInt(request.getParameter("quantite"));
+                    int quantite = Integer.parseInt(request.getParameter("quantite"));
                     Produit p = new Produit(daoUser.findU((String)session.getAttribute("name")).getProprietaire(),request.getParameter("nom"),quantite);
                     exist = daoProduit.find(p.getNom(),daoUser.findU((String)session.getAttribute("name")).getProprietaire());
-                    if (Objects.equals(request.getParameter("delete"), "on")){
-                        if(daoProduit.delete(p,daoUser.findU((String)session.getAttribute("name")).getProprietaire()))modif="Le produit "+request.getParameter("nom")+" a été supprimer.";            
-                    } else {
-                        if (!exist){
+                    if (!exist){
+                        if (Objects.equals(request.getParameter("delete"), "on")){
+                            if(daoProduit.delete(p,daoUser.findU((String)session.getAttribute("name")).getProprietaire()))modif="Le produit "+request.getParameter("nom")+" n'existe pas.";            
+                        } else {
                             if(daoProduit.insert(p,daoUser.findU((String)session.getAttribute("name")).getProprietaire()))modif="Le produit "+request.getParameter("nom")+" a été ajouter.";
+                        }
+                    } else {
+                        if (Objects.equals(request.getParameter("delete"), "on")){
+                            if(daoProduit.delete(p,daoUser.findU((String)session.getAttribute("name")).getProprietaire()))modif="Le produit "+request.getParameter("nom")+" a été supprimer.";            
                         } else {
                             if(daoProduit.update(p,daoUser.findU((String)session.getAttribute("name")).getProprietaire()))modif="Le produit "+request.getParameter("nom")+" a été modifier. Nouvelle quantité :"+quantite;
                         }
                     }
                 }
-                System.out.println(modif);
+                if(Objects.equals(session.getAttribute("next"),"on")){
+                    retourPage = "liste_course.jsp";
+                    request.setAttribute("modif", modif);
+                    request.setAttribute("todo", "");
+                } else {
+                    retourPage = "accueil.jsp";
+                    request.setAttribute("modif", modif);
+                }
+                rd = request.getRequestDispatcher(retourPage);
+                rd.forward(request,response);
+                break;
+            case "retourAccueil":
                 rd = request.getRequestDispatcher("accueil.jsp");
-                request.setAttribute("modif", modif);
                 rd.forward(request,response);
                 break;
             default:
@@ -123,6 +163,7 @@ public class Controleur extends HttpServlet {
                 rd.forward(request,response);
                 break;
         }
+        return;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

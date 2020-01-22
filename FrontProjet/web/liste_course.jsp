@@ -13,11 +13,17 @@
 <html>
     <head>
         <title>Liste des produits</title>
-        <meta charset="UTF-8">
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
+        <%
+            String modif = (String)request.getAttribute("modif");
+            if(!modif.equals("")){
+                request.setAttribute("modif","");
+                out.println("<div>"+modif+"</div><br>");
+            }
+        %>
+        Voici votre liste:
         <ul>
             <%
                 ProduitDAO dao = new ProduitDAO();
@@ -30,7 +36,7 @@
         </ul>
         <form method="post" action="controleur">
             <input type="hidden" name="todo" value="retourAccueil"/>
-            <imput type="submit" value="retour accueil">
+            <input type="submit" value="retour accueil"/>
         </form>
     </body>
 </html>

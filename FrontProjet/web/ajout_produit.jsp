@@ -14,7 +14,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body>
-        <form method="post" action ="controleur">
+        <form method="post" action="controleur">
             <input type="hidden" name="todo" value="nouveauProduit"/>
             Nom du produit : <input type="text" name="nom"/>
             <br>
