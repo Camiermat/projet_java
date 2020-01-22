@@ -120,7 +120,10 @@ public class Controleur extends HttpServlet {
                     exist = daoProduit.find(request.getParameter("nom"),daoUser.findU((String)session.getAttribute("name")).getProprietaire());
                     if (exist){
                         if (Objects.equals(request.getParameter("delete"), "on")){
-                            if(daoProduit.delete(request.getParameter("nom"),daoUser.findU((String)session.getAttribute("name")).getProprietaire()))modif="Le produit "+request.getParameter("nom")+" a été supprimer.";
+                            daoProduit.delete(request.getParameter("nom"),daoUser.findU((String)session.getAttribute("name")).getProprietaire());
+                            modif="Le produit "+request.getParameter("nom")+" a été supprimer.";
+                        } else {
+                            modif = "La quantité n'a pas été saisie";
                         }
                     } else {
                         modif = "Le produit n'existe pas et aucune quantité n'a été rentrée";
@@ -131,26 +134,29 @@ public class Controleur extends HttpServlet {
                     exist = daoProduit.find(p.getNom(),daoUser.findU((String)session.getAttribute("name")).getProprietaire());
                     if (!exist){
                         if (Objects.equals(request.getParameter("delete"), "on")){
-                            if(daoProduit.delete(p,daoUser.findU((String)session.getAttribute("name")).getProprietaire()))modif="Le produit "+request.getParameter("nom")+" n'existe pas.";            
+                            daoProduit.delete(p,daoUser.findU((String)session.getAttribute("name")).getProprietaire());
+                            modif="Le produit "+request.getParameter("nom")+" n'existe pas.";            
                         } else {
-                            if(daoProduit.insert(p,daoUser.findU((String)session.getAttribute("name")).getProprietaire()))modif="Le produit "+request.getParameter("nom")+" a été ajouter.";
+                            daoProduit.insert(p,daoUser.findU((String)session.getAttribute("name")).getProprietaire());
+                            modif="Le produit "+request.getParameter("nom")+" a été ajouter.";
                         }
                     } else {
                         if (Objects.equals(request.getParameter("delete"), "on")){
-                            if(daoProduit.delete(p,daoUser.findU((String)session.getAttribute("name")).getProprietaire()))modif="Le produit "+request.getParameter("nom")+" a été supprimer.";            
+                            daoProduit.delete(p,daoUser.findU((String)session.getAttribute("name")).getProprietaire());
+                            modif="Le produit "+request.getParameter("nom")+" a été supprimer.";            
                         } else {
-                            if(daoProduit.update(p,daoUser.findU((String)session.getAttribute("name")).getProprietaire()))modif="Le produit "+request.getParameter("nom")+" a été modifier. Nouvelle quantité :"+quantite;
+                            daoProduit.update(p,daoUser.findU((String)session.getAttribute("name")).getProprietaire());
+                            modif="Le produit "+request.getParameter("nom")+" a été modifier. Nouvelle quantité :"+quantite;
                         }
                     }
                 }
                 if(Objects.equals(session.getAttribute("next"),"on")){
                     retourPage = "liste_course.jsp";
-                    request.setAttribute("modif", modif);
                     request.setAttribute("todo", "");
                 } else {
                     retourPage = "accueil.jsp";
-                    request.setAttribute("modif", modif);
                 }
+                request.setAttribute("modif", modif);
                 rd = request.getRequestDispatcher(retourPage);
                 rd.forward(request,response);
                 break;
