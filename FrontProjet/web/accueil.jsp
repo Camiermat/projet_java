@@ -5,14 +5,12 @@
 --%>
 
 <%@page import="java.util.Objects"%>
+<%@ include file="WEB-INF/include/header.jsp" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <title>Liste de course</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     </head>
     <body>
         <h1>Bienvenue <%=request.getSession().getAttribute("name")%></h1>
