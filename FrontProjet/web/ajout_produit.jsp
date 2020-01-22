@@ -12,15 +12,16 @@
         <title>Ajout d'un produit</title>
     </head>
     <body>
+        Pour ajouter un nouveau produit, veuillez compléter le formulaire suivant :
         <form method="post" action="controleur">
             <input type="hidden" name="todo" value="nouveauProduit"/>
             Nom du produit : <input type="text" name="nom"/>
             <br>
             Quantité : <input type="number" name="quantite"/>
             <br>
-            Suppression :<input type="checkbox" name="delete"/>
+            Si vous voulez supprimer le produit de votre liste : <input type="checkbox" name="delete"/>
             <br>
-            <input type="submit" value="OK"/>
+            <input type="submit" value="Valider"/>
         </form>
     </body>
 </html>

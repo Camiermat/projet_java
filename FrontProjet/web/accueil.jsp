@@ -13,7 +13,7 @@
         <title>Liste de course</title>
     </head>
     <body>
-        <h1>Bienvenue <%=request.getSession().getAttribute("name")%></h1>
+        <h2>Bonjour <%=request.getSession().getAttribute("name")%></h2>
         <br>
         <%
             if(!(request.getSession().getAttribute("first").equals("1"))){
@@ -22,7 +22,8 @@
                     request.setAttribute("modif","");
                 }
             }
-        %> 
+        %>
+        <h2>Quels actions souhaitez-vous réaliser ?</h2>
         <form method="post" action="controleur">
             <input type="hidden" name="todo" value="choixPage"/>
             Ajouter un produit<input type="checkbox" name="ajouterProduit"/>

@@ -35,7 +35,7 @@ public class ProduitDAO implements DAO{
             PreparedStatement prepare = connect.prepareStatement("INSERT INTO Produit VALUES (?,?,?)");
             prepare.setInt(1,id);
             prepare.setString(2, p.getNom());
-            prepare.setInt(3,p.getQuantité());
+            prepare.setInt(3,p.getQuantite());
             int result = prepare.executeUpdate();
             if(result==1)return true;
         } catch (SQLException e){
@@ -47,7 +47,7 @@ public class ProduitDAO implements DAO{
     public boolean update(Produit p, int id) {
         try{
             PreparedStatement prepare = connect.prepareStatement("UPDATE Produit SET Quantité=? where Nom=? and proprietaire=?");
-            prepare.setInt(1,p.getQuantité());
+            prepare.setInt(1,p.getQuantite());
             prepare.setString(2, p.getNom());
             prepare.setInt(3, id);
             int result = prepare.executeUpdate();

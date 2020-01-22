@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : liste_course
     Created on : 16 janv. 2020, 14:39:05
     Author     : p1805797
@@ -23,20 +23,24 @@
                 out.println("<div>"+modif+"</div><br>");
             }
         %>
-        Voici votre liste:
+        <h2>Voici votre liste de course :</h2>
         <ul>
             <%
                 ProduitDAO dao = new ProduitDAO();
                 UserDAO daoU = new UserDAO();
                 ArrayList<Produit> listProduit = dao.findAll((daoU.findU((String)request.getSession().getAttribute("name"))).getProprietaire());
-                for (Produit p : listProduit){
-                    out.println("<li>"+p.getNom()+" : "+p.getQuantité()+"</li>");
+                if (listProduit.size()==0){
+                    out.println("Vous n'avez encore aucun produit dans votre liste");
+                } else {
+                    for (Produit p : listProduit){
+                        out.println("<li>"+p.getNom()+" : "+p.getQuantite()+"</li>");
+                    }
                 }
             %>
         </ul>
         <form method="post" action="controleur">
             <input type="hidden" name="todo" value="retourAccueil"/>
-            <input type="submit" value="retour accueil"/>
+            Pour revenir sur la page d'accueil : <input type="submit" value="retour accueil"/>
         </form>
     </body>
 </html>

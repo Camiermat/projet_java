@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : connexion
     Created on : 17 janv. 2020, 09:54:48
     Author     : p1805797
@@ -12,7 +12,7 @@
         <title>Connexion</title>
     </head>
     <body>
-        Se connecter
+        <h2>Se connecter</h2>
         <form method="post" action="controleur">
             <input type="hidden" name="todo" value="connect">
             Login : <input type="text" name="login">
@@ -20,7 +20,7 @@
             <input type="submit" value="Entrer">
         </form>
         <br>
-        S'inscrire
+        <h2>S'inscrire</h2>
         <form method="post" action="controleur">
             <input type="hidden" name="todo" value="inscription">
             Login : <input type="text" name="login">

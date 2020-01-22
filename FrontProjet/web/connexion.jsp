@@ -12,7 +12,7 @@
         <title>Connexion</title>
     </head>
     <body>
-        Se connecter
+        <h2>Se connecter</h2>
         <form method="post" action="controleur">
             <input type="hidden" name="todo" value="connect">
             Login : <input type="text" name="login">
@@ -26,7 +26,7 @@
                 out.println("<div>Login ou mot de passe incorrecte</div><br>");
             }
         %>
-        S'inscrire
+        <h2>S'inscrire</h2>
         <form method="post" action="controleur">
             <input type="hidden" name="todo" value="inscription">
             Login : <input type="text" name="login">

@@ -24,7 +24,7 @@ public class Produit {
         return nom;
     }
 
-    public int getQuantité() {
+    public int getQuantite() {
         return quantite;
     }
 
